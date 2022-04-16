@@ -19,6 +19,19 @@ class MVPController:
         self.last_y = 0
 
     def calc_mvp(self, model_matrix=glm.mat4(1.0)):
+        self.direction = glm.vec3(
+            - math.cos(glm.radians(self.yaw)) * math.cos(glm.radians(self.pitch)),
+            math.sin(glm.radians(self.pitch)),
+            math.sin(glm.radians(self.yaw)) * math.cos(glm.radians(self.pitch))
+
+        )
+        self.right = glm.normalize(glm.cross(glm.vec3(0, 1, 0), self.direction))
+        self.up = glm.cross(self.direction, self.right)
+        self.view_matrix = glm.lookAt(self.position,
+                                      self.position + self.direction,
+                                      self.up)
+
+        self.projection_matrix = glm.perspective(glm.radians(self.fov), self.width / self.height, 0.1, 1000)
         return self.projection_matrix * self.view_matrix * model_matrix
 
     def calc_view_projection(self):
@@ -33,11 +46,27 @@ class MVPController:
 
     def on_keyboard(self, key: bytes, x: int, y: int):
 
+        vector = glm.vec3(0, 0, 0)
+        if key == b'w':
+            # forward
+            vector = glm.vec3(+1, 0, 0)
+        if key == b'a':
+            # left
+            vector = glm.vec3(0, 0, +1)
+        if key == b'd':
+            # right
+            vector = glm.vec3(0, 0, -1)
+        if key == b's':
+            # backward
+            vector = glm.vec3(-1, 0, 0)
+        if key == b'e':
+            # up
+            vector = glm.vec3(0, +1, 0)
+        if key == b'r':
+            # down
+            vector = glm.vec3(0, -1, 0)
 
-
-
-
-        
+        self.position -= vector * self.speed
 
         self.calc_view_projection()
         self.callback_update()
