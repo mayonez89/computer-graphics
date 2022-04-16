@@ -12,7 +12,7 @@ uniform mat4 mvp;
 
 void main(){
 	// Output position of the vertex, in clip space : MVP * position
-	gl_Position =  mvp * vec4(vertex_position, 1);
+	gl_Position =  mvp * vec4(vertex_position * 0.5, 1);
 	
 	// UV of the vertex. Just passing it to the fragment shader
 	uv = vertex_uv;

@@ -7,9 +7,9 @@ class MVPController:
         self.callback_update = callback_update
         self.width = width
         self.height = height
-        self.position = glm.vec3(2, 2, 2.5)
-        self.pitch = -0.5
-        self.yaw = -0.5
+        self.position = glm.vec3(3, 3, 3)
+        self.pitch = 0.5
+        self.yaw = 0.5
         self.roll = 0.0
         self.speed = 0.4
         self.mouse_speed = 0.01
@@ -83,6 +83,8 @@ class MVPController:
         self.last_y = y
         self.yaw -= y_diff * self.mouse_speed
         self.pitch -= x_diff * self.mouse_speed
+        # print(self.yaw)
+        # print(self.pitch)
         self.calc_view_projection()
         self.callback_update()
 
